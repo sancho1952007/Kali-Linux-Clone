@@ -1,0 +1,460 @@
+<!--
+    Developer: Sancho Godinho
+    Right-Click Help: https://stackoverflow.com/a/20471268
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kali Linux</title>
+    <!-- Import Jquery Library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+
+    <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
+
+    <!-- Import SweetAlertJS Library -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+    <!-- Task Bar -->
+    <div class="taskbar">
+        <div class="taksbar-item">
+            <img class='kali-taskbar-icon' src='images/taskbar-kali-logo.png'>
+        </div>
+
+
+        <div class='taskbar-apps'>
+
+            <div class="taksbar-item" id='app1' onclick="NewAppWindow('Chrome', 'https://google.com')">
+                <img class='taskbar-icon' src='images/Chrome.png'>
+            </div>
+
+            <div class="taskbar-item" id='app2'>
+                <img class='taskbar-icon' src='images/Terminal.png' onclick="NewAppWindow('Terminal', 'Apps/Terminal/index.html')">
+            </div>
+
+            <div class="taskbar-item" id='app3'>
+                <img class='taskbar-icon' src='images/VS Code.png' onclick="NewAppWindow('VS Code', 'https://vscode.dev')">
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Right Click Menu -->
+    <ul class='custom-menu'>
+        <li data-action="1">New File</li>
+        <li data-action="2" onclick="NewAppWindow('Terminal', 'Apps/Terminal/index.html')"><img src='images/Terminal.png' class='rclick-icon'> Open Terminal Here</li>
+    </ul>
+
+    <!-- Popup Menu -->
+    <div class="popup">
+        <div class="popup-item"></div>
+        <div class="popup-item"></div>
+        <input type="text" class="popup-item">
+    </div>
+</body>
+
+<style>
+    @font-face {
+        font-family: 'Montserrat';
+        font-style: normal;
+        src: url("fonts/Montserrat-Regular.ttf") format('woff2');
+    }
+
+    .custom-menu {
+        display: none;
+        z-index: 1000;
+        position: absolute;
+        overflow: hidden;
+        white-space: nowrap;
+        font-family: sans-serif;
+        background: rgb(53, 53, 53, 0.9);
+        color: #ccc;
+        border-radius: 5px;
+        padding: 0;
+        font-size: 15px;
+    }
+    
+    .custom-menu li {
+        padding: 8px 12px;
+        cursor: pointer;
+        list-style-type: none;
+        transition: all .3s ease;
+        user-select: none;
+    }
+    
+    .custom-menu li:hover {
+        background-color: rgba(80, 80, 80, 0.9);
+    }
+
+    .rclick-icon{
+        width: 15px;
+        padding: 0;
+    }
+
+    body{
+        background-image: url("images/desktop-background.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        overflow: hidden;
+        width: 100%;
+        height: calc(100vh - 33px);
+    }
+
+    .popup{
+        width: 100%;
+        height: 70vh;
+        background-color: rgb(53, 53, 53);
+        position: absolute;
+        bottom: -70vh;
+        left: 5px;
+        max-width: 400px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        transition: all .50s linear;
+        z-index: 5;
+    }
+
+    .taskbar{
+        position: fixed;
+        display: flex;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 35px;
+        background-color: #22242c;
+        font-size: 20px;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 300;
+        text-align: center;
+        line-height: 50px;
+        justify-content: start;
+        align-items: start;
+    }
+
+    .taskbar-apps{
+        width: 40%;
+        display: flex;
+        justify-content: start;
+        align-items: start;
+    }
+
+    .kali-taskbar-icon{
+        margin-right: 10px;
+        width: 33px;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .taskbar-icon{
+        width: 30px;
+        height: 30px;
+        padding: 0.5px;
+        margin-right: 10px;
+        transition: all 0.25s linear;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .taskbar-icon:hover{
+        background-color: rgb(195, 196, 186, 0.3);
+        border-radius: 5px;
+    }
+
+    .taskbar-icon:active{
+        background-color: rgb(212, 212, 212, 0.3);
+        opacity: 0.7;
+        border-radius: 5px;
+    }
+
+    .File{
+        display: flex;
+        justify-content: center;
+        width: 70px;
+        margin: 3px;
+        cursor: default;
+        object-fit: contain;
+        background-color: rgb(195, 196, 186, 0.7);
+        border-radius: 5px;
+        padding-bottom: -2px;
+        user-select: none;
+    }
+
+    .File-div{
+        text-align: center;
+    }
+
+    .File-image{
+        width: 65px;
+        margin-top: 2px;
+        padding: 5px;
+        user-select: none;
+    }
+
+    .File-name{
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        word-break: break-word;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    iframe{
+        /* background-image: url('images/App-Loader.gif');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center; */
+        background: transparent;
+    }
+    
+    .app-window{
+        text-align: center;
+        width: 500px;
+        height: 300px;
+        background-color: rgb(53, 53, 53, 0.9);
+        border-radius: 5px;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        position: absolute;
+    }
+
+    .app-title{
+        margin-top: 5px;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .app-btns{
+        position: absolute;
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        display: flex;
+        font-weight: bold;
+        top: 2px;
+        right: 5px;
+    }
+
+    .app-btn{
+        width: 25px;
+        height: 25px;
+        border-radius: 2px;
+    }
+
+    .app-btn:hover{
+        background-color: rgb(195, 196, 186, 0.3);
+    }
+
+    .app-frame{
+        width: 99%;
+        border: 0px;
+        position: absolute;
+        bottom: 2px;
+        left: 0.5%;
+        height: calc(100% - 30px);
+    }
+
+    .transparent{
+        transition: all .25s linear;
+        opacity: 0;
+    }
+
+    .transition{
+        transition: all .25s linear;
+    }
+</style>
+
+<script>
+    var z_index = 0;
+    function NewAppWindow(title, appSource){
+        var app = document.createElement("div");
+        app.className = 'app-window';
+        app.innerHTML = "<p class='app-title'>"+title+"</p><div class='app-btns'><div class='app-btn'>–</div><div class='app-btn' onclick='this.parentNode.parentNode.className=this.parentNode.parentNode.className+\" transition\"; if (this.parentNode.parentNode.style.height=\"calc(100vh - 35px)\" && this.parentNode.parentNode.style.width==\"100%\"){this.parentNode.parentNode.style=\"height:300px; width: 500px;\"} else{this.parentNode.parentNode.style=\"width:100%; height:calc(100vh - 35px); top:0; left:0;\"} this.parentNode.parentNode.style.color=\"white\"; setTimeout(() => {this.parentNode.parentNode.className=\"app-window\"}, 1000);'>□</div><div class='app-btn' onclick='CloseWindow(this)'>&times;</div></div>";
+        app.onmousedown = function(){
+            this.style.zIndex=z_index++;
+        }
+        app.onload = function(){
+            this.style.zIndex=z_index++;
+        }
+        app.style.color = 'white';
+        app.onresize = function(){
+            $(this.childNodes[1]).height($(this).height()-30+'px');
+        }
+        app.onload=function(){
+            $(this.childNodes[1]).height($(this).height()-30+'px');
+        }
+        var iframe = document.createElement("iframe");
+        iframe.src = appSource;
+        iframe.className = 'app-frame';
+        document.body.appendChild(app);
+        app.appendChild(iframe);
+        $(".app-window").draggable({scroll: false}).resizable();
+        $(app).position({
+            my: "center",
+            at: "center",
+            of: "html"
+        });
+    }
+
+    function CloseWindow(element){
+        element.parentNode.parentNode.className = element.parentNode.parentNode.className + ' transparent';
+        setTimeout(function (){
+            element.parentNode.parentNode.remove();
+        }, 700);
+    }
+</script>
+
+<script>
+    // Important Functions
+    if (!String.prototype.endsWith) {
+        String.prototype.endsWith = function(search, this_len) {
+          if (this_len === undefined || this_len > this.length) {
+            this_len = this.length;
+          }
+          return this.substring(this_len - search.length, this_len) === search;
+        };
+    }
+
+    $(document).ready(function(){
+        
+        $('.taskbar-icon').draggable({
+            containment: ".taskbar-apps",
+            scroll: false,
+            axis: 'x',
+            cursor: "move",
+            grid: [40],
+            snap: '.taskbar-icon'
+        });
+        
+        $('.taskbar-apps').droppable({
+            accept: '.taskbar-icon',
+            drop: function(event, ui){
+                var dropped = ui.draggable;
+                var droppedOn = $(this);
+                $(dropped).detach().css({top: 0,left: 0}).appendTo(droppedOn);
+            }
+        });
+
+        $('.taskbar-icon').disableSelection();
+
+        $('.kali-taskbar-icon').click((event) => {
+            $('.popup').css('bottom', '37px');
+
+            $(window).click((click) => {
+                if (click.target.className==='popup-item' || click.target.className==='popup' || click.target.className=='kali-taskbar-icon'){
+                    $('.popup').css('bottom', '37px');
+                   // window.addEventListener('keyup', ())
+                }
+                else{
+                    $('.popup').css('bottom', '-70vh');
+                    $(window).unbind();
+                }
+            });
+        });
+    });
+
+    function createNewFile(){
+        swal({
+            title: "New File",
+            text: "Enter the name of the new file",
+            content: "input",
+            button: {
+                text: "Create",
+                closeModal: true,
+            },
+        }).then((Filename) => {
+            if (Filename.length<30){
+                var file=document.createElement('div');
+                file.className="File";
+                var file2 = document.createElement('div');
+                file2.className="File-div";
+                p=document.createElement('p');
+                p.className="File-name";
+                p.innerHTML=Filename;
+                img=document.createElement('img');
+                img.className="File-image";
+                img.src='./images/File.png';
+                document.body.appendChild(file);
+                file.appendChild(file2);
+                file2.appendChild(img);
+                file2.appendChild(p);
+                $(file).draggable({
+                    scroll: false
+                });
+                // $('.File .File-div .File-image .File-name');
+            }
+
+            else if (Filename.trim()==''){}
+
+            else{
+                swal({
+                    title: "Error",
+                    text: "File name is too long",
+                    icon: "error",
+                    button: {
+                        text: "Ok",
+                        closeModal: true,
+                    },
+                });
+            }
+        })
+    }
+
+
+
+
+
+    $(document).bind("contextmenu", function (event) {
+    
+    event.preventDefault();
+    
+    $(".custom-menu").finish().toggle(100).
+    
+    css({
+        top: event.pageY + "px",
+        left: event.pageX + "px"
+    });
+});
+
+
+$(document).bind("mousedown", function (e) {
+    if (!$(e.target).parents(".custom-menu").length > 0) {
+        $(".custom-menu").hide(100);
+        }
+    });
+
+    $(".custom-menu li").click(function(){
+        switch($(this).attr("data-action")) {
+            
+            case "1": createNewFile();break;
+            case "2": null; break;
+        }
+      
+        $(".custom-menu").hide(100);
+      });
+</script>
+
+</html>
